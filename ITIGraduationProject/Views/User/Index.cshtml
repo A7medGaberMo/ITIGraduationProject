@@ -1,0 +1,150 @@
+﻿@model IEnumerable<ITIGraduationProject.BLL.ViewModels.UserVM.UserEditVM>
+@using ITIGraduationProject.DAL.Models.Enums
+
+@{
+    ViewData["Title"] = "Users";
+
+    int pageNumber = ViewBag.PageNumber ?? 1;
+    int pageSize = ViewBag.PageSize ?? 5;
+    int totalCount = ViewBag.TotalCount ?? 0;
+    int totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+
+    var searchTerm = ViewBag.SearchTerm as string ?? "";
+    var selectedRole = ViewBag.SelectedRole as string ?? "";
+}
+
+<h2><i class="fa-solid fa-users"></i> Users</h2>
+
+<!-- Search & Filter -->
+<div class="mb-3 row g-2">
+    <form method="get" asp-action="Index" class="col-md-6">
+        <div class="input-group">
+            <input type="text" name="searchTerm" value="@searchTerm" placeholder="Search by name..." class="form-control" />
+            <button type="submit" class="btn btn-primary">
+                <i class="fa-solid fa-magnifying-glass"></i> Search
+            </button>
+        </div>
+    </form>
+
+    <form method="get" asp-action="Index" class="col-md-6">
+        <div class="input-group">
+            <select name="role" class="form-select">
+                <option value="">-- All Roles --</option>
+                @foreach (var role in Enum.GetValues(typeof(UserRole)))
+                {
+                    if (role.ToString() == selectedRole)
+                    {
+                        <option value="@role" selected="selected">@role</option>
+                    }
+                    else
+                    {
+                        <option value="@role">@role</option>
+                    }
+                }
+
+            </select>
+
+            <input type="hidden" name="searchTerm" value="@searchTerm" />
+            <button type="submit" class="btn btn-secondary">
+                <i class="fa-solid fa-filter"></i> Filter
+            </button>
+        </div>
+    </form>
+</div>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">
+        <i class="fa-solid fa-plus"></i> Add New User
+    </a>
+</p>
+
+<!-- Users Table -->
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.Name</td>
+                    <td>@user.Age</td>
+                    <td>@user.Role</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@user.Id" class="btn btn-info btn-sm">
+                            Details
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@user.Id" class="btn btn-warning btn-sm">
+                            Edit
+                        </a>
+                        <form asp-action="Delete" asp-route-id="@user.Id" method="post" style="display:inline;" onsubmit="return confirm('Are you sure?');">
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center">No users found.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Pagination -->
+@if (totalPages > 1)
+{
+    <nav>
+        <ul class="pagination justify-content-center">
+            @if (pageNumber > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-pageNumber="@(pageNumber - 1)"
+                       asp-route-searchTerm="@searchTerm"
+                       asp-route-role="@selectedRole">
+                        Previous
+                    </a>
+                </li>
+            }
+
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                <li class="page-item @(i == pageNumber ? "active" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-pageNumber="@i"
+                       asp-route-searchTerm="@searchTerm"
+                       asp-route-role="@selectedRole">@i</a>
+                </li>
+            }
+
+            @if (pageNumber < totalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-pageNumber="@(pageNumber + 1)"
+                       asp-route-searchTerm="@searchTerm"
+                       asp-route-role="@selectedRole">
+                        Next
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+}

@@ -1,0 +1,180 @@
+﻿@model IEnumerable<ITIGraduationProject.BLL.ViewModels.CourseListVM>
+
+@{
+    ViewData["Title"] = "Courses";
+    var categories = ViewBag.Categories as List<string>;
+    var instructors = ViewBag.Instructors as List<SelectListItem>;
+    int pageNumber = ViewBag.PageNumber ?? 1;
+    int pageSize = ViewBag.PageSize ?? 2;
+    int totalCount = ViewBag.TotalCount ?? 0;
+    int totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
+    var searchTerm = ViewBag.SearchTerm as string ?? "";
+    var selectedCategory = ViewBag.SelectedCategory as string ?? "";
+    var selectedInstructor = ViewBag.SelectedInstructor as string ?? "";
+}
+
+<h2><i class="fa-solid fa-book"></i> Courses</h2>
+
+<!-- Search & Filter Section -->
+<div class="mb-3 row g-2">
+    <form method="get" asp-action="Index" class="col-md-6">
+        <div class="input-group">
+            <input type="text" name="searchTerm" value="@searchTerm" placeholder="Search courses..." class="form-control" />
+            <button type="submit" class="btn btn-primary">
+                <i class="fa-solid fa-magnifying-glass"></i> Search
+            </button>
+        </div>
+    </form>
+
+    <form method="get" asp-action="Index" class="col-md-6">
+        <div class="input-group">
+            <select name="category" class="form-select">
+                <option value="">-- All Categories --</option>
+                @if (categories != null)
+                {
+                    foreach (var cat in categories)
+                    {
+                        if (cat == selectedCategory)
+                        {
+                            <option value="@cat" selected="selected">@cat</option>
+                        }
+                        else
+                        {
+                            <option value="@cat">@cat</option>
+                        }
+                    }
+                }
+            </select>
+
+            <select name="instructorName" class="form-select">
+                <option value="">-- All Instructors --</option>
+                @if (instructors != null)
+                {
+                    foreach (var instr in instructors)
+                    {
+                        if (instr.Value == selectedInstructor)
+                        {
+                            <option value="@instr.Value" selected="selected">@instr.Text</option>
+                        }
+                        else
+                        {
+                            <option value="@instr.Value">@instr.Text</option>
+                        }
+                    }
+                }
+            </select>
+
+            <button type="submit" class="btn btn-secondary">
+                <i class="fa-solid fa-filter"></i> Filter
+            </button>
+        </div>
+    </form>
+</div>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">
+        <i class="fa-solid fa-plus"></i> Add New Course
+    </a>
+</p>
+
+<!-- Success Message -->
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        <i class="fa-solid fa-circle-check"></i> @TempData["Success"]
+    </div>
+}
+
+<!-- Courses Table -->
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Instructor</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            foreach (var course in Model)
+            {
+                <tr>
+                    <td>@course.Id</td>
+                    <td>@course.Name</td>
+                    <td>@course.Category</td>
+                    <td>@course.InstructorName</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@course.Id" class="btn btn-info btn-sm">
+                            <i class="fa-solid fa-circle-info"></i> Details
+                        </a>
+                        <a asp-action="Edit" asp-route-id="@course.Id" class="btn btn-warning btn-sm">
+                            <i class="fa-solid fa-pen"></i> Edit
+                        </a>
+                        <form asp-action="Delete" asp-route-id="@course.Id" method="post" style="display:inline;" onsubmit="return confirm('Are you sure?');">
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="fa-solid fa-trash"></i> Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" class="text-center">No courses found.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Pagination -->
+@if (totalPages > 1)
+{
+    <nav>
+        <ul class="pagination justify-content-center">
+            @if (pageNumber > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-pageNumber="@(pageNumber - 1)"
+                       asp-route-searchTerm="@searchTerm"
+                       asp-route-category="@selectedCategory"
+                       asp-route-instructorName="@selectedInstructor">
+                        Previous
+                    </a>
+                </li>
+            }
+
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                <li class="page-item @(i == pageNumber ? "active" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-pageNumber="@i"
+                       asp-route-searchTerm="@searchTerm"
+                       asp-route-category="@selectedCategory"
+                       asp-route-instructorName="@selectedInstructor">@i</a>
+                </li>
+            }
+
+            @if (pageNumber < totalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-pageNumber="@(pageNumber + 1)"
+                       asp-route-searchTerm="@searchTerm"
+                       asp-route-category="@selectedCategory"
+                       asp-route-instructorName="@selectedInstructor">
+                        Next
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+}

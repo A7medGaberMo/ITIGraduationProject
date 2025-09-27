@@ -1,0 +1,24 @@
+﻿@model ITIGraduationProject.BLL.ViewModels.CourseVM.CourseEditVM
+
+@{
+    ViewData["Title"] = "Edit Course";
+}
+
+<h2><i class="fa-solid fa-edit"></i> Edit Course</h2>
+
+<form asp-action="Edit" method="post" class="needs-validation" novalidate>
+    <input type="hidden" asp-for="Id" />
+
+    <partial name="_CourseForm" model="Model" />
+
+    <button type="submit" class="btn btn-primary">
+        <i class="fa-solid fa-floppy-disk"></i> Save
+    </button>
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

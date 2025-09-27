@@ -1,0 +1,17 @@
+﻿@model ITIGraduationProject.BLL.ViewModels.UserVM.UserEditVM
+@{
+    ViewData["Title"] = "Edit User";
+}
+
+<h2><i class="fa-solid fa-user-edit"></i> Edit User</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <partial name="_UserForm" model="Model" />
+    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Update</button>
+    <a asp-action="Index" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> Back</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

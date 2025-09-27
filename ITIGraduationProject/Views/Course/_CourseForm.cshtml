@@ -1,0 +1,33 @@
+﻿@model ITIGraduationProject.BLL.ViewModels.CourseVM.CourseCreateVM
+@using Microsoft.AspNetCore.Mvc.Rendering
+
+<div class="form-group mb-3">
+    <label asp-for="Name" class="form-label">
+        <i class="fa-solid fa-book"></i> Course Name
+    </label>
+    <input asp-for="Name" class="form-control" placeholder="Enter course name" />
+    <span asp-validation-for="Name" class="text-danger"></span>
+</div>
+
+<div class="form-group mb-3">
+    <label asp-for="Category" class="form-label">
+        <i class="fa-solid fa-tags"></i> Category
+    </label>
+    <select asp-for="Category" class="form-select" asp-items="ViewBag.Categories">
+        <option value="">-- Select Category --</option>
+    </select>
+    <span asp-validation-for="Category" class="text-danger"></span>
+</div>
+
+<div class="form-group mb-3">
+    <label asp-for="InstructorId" class="form-label">
+        <i class="fa-solid fa-chalkboard-user"></i> Instructor
+    </label>
+    <select asp-for="InstructorId" class="form-select" asp-items="ViewBag.Instructors">
+        <option value="">-- Select Instructor --</option>
+    </select>
+    <span asp-validation-for="InstructorId" class="text-danger"></span>
+</div>
+
+<!-- This hidden field is required for Remote validation -->
+<input type="hidden" asp-for="Id" />

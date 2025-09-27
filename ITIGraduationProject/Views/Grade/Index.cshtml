@@ -1,0 +1,117 @@
+﻿@model IEnumerable<ITIGraduationProject.DAL.Models.Grade>
+
+@{
+    ViewData["Title"] = "Grades";
+    var pageNumber = ViewBag.PageNumber as int? ?? 1;
+    var pageSize = ViewBag.PageSize as int? ?? 3;
+    var totalPages = ViewBag.TotalPages as int? ?? 1;
+    var traineeName = ViewBag.TraineeName as string ?? "";
+    var courseId = ViewBag.CourseId as int? ?? 0;
+}
+
+<h2><i class="fa-solid fa-graduation-cap"></i> Grades</h2>
+
+<!-- Search & Filter -->
+<div class="mb-3 row g-2">
+    <form method="get" asp-action="Index" class="col-md-6">
+        <div class="input-group">
+            <input type="text" name="traineeName" value="@traineeName" placeholder="Search by Trainee Name" class="form-control" />
+            <input type="hidden" name="courseId" value="@courseId" />
+            <button type="submit" class="btn btn-primary">
+                <i class="fa-solid fa-magnifying-glass"></i> Search
+            </button>
+        </div>
+    </form>
+
+    <form method="get" asp-action="Index" class="col-md-6">
+        <div class="input-group">
+            <select name="courseId" class="form-select" asp-items="ViewBag.Courses">
+                <option value="">All Courses</option>
+            </select>
+            <input type="hidden" name="traineeName" value="@traineeName" />
+            <button type="submit" class="btn btn-secondary">
+                <i class="fa-solid fa-filter"></i> Filter
+            </button>
+        </div>
+    </form>
+</div>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">
+        <i class="fa-solid fa-plus"></i> Create New Grade
+    </a>
+</p>
+
+<!-- Grades Table -->
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Trainee Name</th>
+            <th>Course Name</th>
+            <th>Grade</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Any())
+        {
+            foreach (var grade in Model)
+            {
+                <tr>
+                    <td>@grade.Trainee?.Name</td>
+                    <td>@grade.Session?.Course?.Name</td>
+                    <td>@grade.Value</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3" class="text-center">No grades found.</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (totalPages > 1)
+{
+    <nav>
+        <ul class="pagination justify-content-center">
+            @if (pageNumber > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-pageNumber="@(pageNumber - 1)"
+                       asp-route-traineeName="@traineeName"
+                       asp-route-courseId="@courseId">
+                        <i class="fa-solid fa-chevron-left"></i> Previous
+                    </a>
+                </li>
+            }
+
+            @for (int i = 1; i <= totalPages; i++)
+            {
+                <li class="page-item @(i == pageNumber ? "active" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-pageNumber="@i"
+                       asp-route-traineeName="@traineeName"
+                       asp-route-courseId="@courseId">@i</a>
+                </li>
+            }
+
+            @if (pageNumber < totalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-pageNumber="@(pageNumber + 1)"
+                       asp-route-traineeName="@traineeName"
+                       asp-route-courseId="@courseId">
+                        Next <i class="fa-solid fa-chevron-right"></i>
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+}

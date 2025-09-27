@@ -1,0 +1,22 @@
+﻿@model ITIGraduationProject.BLL.ViewModels.CourseVM.CourseCreateVM
+
+@{
+    ViewData["Title"] = "Create Course";
+}
+
+<h2><i class="fa-solid fa-plus-circle"></i> Create Course</h2>
+
+<form asp-action="Create" method="post" class="needs-validation" novalidate>
+    <partial name="_CourseForm" model="Model" />
+
+    <button type="submit" class="btn btn-success">
+        <i class="fa-solid fa-check"></i> Create
+    </button>
+    <a asp-action="Index" class="btn btn-secondary">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,46 @@
+# Ignore build folders
+bin/
+obj/
+
+# Ignore Visual Studio temporary files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore Visual Studio Code settings
+.vscode/
+
+# Ignore Visual Studio cache/options
+.vs/
+
+# Ignore IIS Express files
+IISExpress/
+
+# Ignore NuGet packages
+*.nupkg
+packages/
+
+# Ignore publish output
+*.Publish.xml
+*.publishsettings
+*.pubxml
+*.pubxml.user
+
+# Ignore log files
+*.log
+
+# Ignore database files
+*.mdf
+*.ldf
+*.sqlite
+
+# Ignore App_Data cache
+App_Data/
+
+# Ignore Rider IDE files
+.idea/
+
+# Ignore temp files
+*.tmp
+*.bak

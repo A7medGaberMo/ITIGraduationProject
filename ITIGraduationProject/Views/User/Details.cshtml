@@ -1,0 +1,12 @@
+﻿@model ITIGraduationProject.DAL.Models.User
+
+<h2><i class="fa-solid fa-user"></i> User Details</h2>
+
+<div>
+    <p><strong>ID:</strong> @Model.Id</p>
+    <p><strong>Name:</strong> @Model.Name</p>
+    <p><strong>Age:</strong> @Model.Age</p>
+    <p><strong>Role:</strong> @Model.Role</p>
+</div>
+
+<a asp-action="Index" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> Back</a>

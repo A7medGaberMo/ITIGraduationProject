@@ -1,0 +1,16 @@
+﻿@model ITIGraduationProject.BLL.ViewModels.UserVM.UserCreateVM
+@{
+    ViewData["Title"] = "Create User";
+}
+
+<h2><i class="fa-solid fa-user-plus"></i> Create User</h2>
+
+<form asp-action="Create" method="post">
+    <partial name="_UserForm" model="Model" />
+    <button type="submit" class="btn btn-success"><i class="fa-solid fa-check"></i> Save</button>
+    <a asp-action="Index" class="btn btn-secondary"><i class="fa-solid fa-arrow-left"></i> Back</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
