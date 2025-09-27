@@ -11,7 +11,7 @@ namespace ITIGraduationProject.DAL.Repository.Generic
         void Remove(T entity);
         void SaveChanges();
 
-        // ✅ New method
+       
         IQueryable<T> AsQueryable();
     }
 }

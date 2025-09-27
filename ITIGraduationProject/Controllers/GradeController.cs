@@ -32,7 +32,7 @@ namespace ITIGraduationProject.PL.Controllers
             ViewBag.TraineeName = traineeName ?? "";
             ViewBag.CourseId = courseId ?? 0;
 
-            // ✅ Use the new service method to build dropdown
+            
             var courses = _sessionService.GetAllCourses()
                                          .Select(c => new { c.CourseId, c.CourseName })
                                          .ToList();

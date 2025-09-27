@@ -70,7 +70,7 @@ namespace ITIGraduationProject.BLL.Services
                                        .ToList();
         }
 
-        // ✅ New method: get all distinct courses for dropdown
+        
         public IEnumerable<(int CourseId, string CourseName)> GetAllCourses()
         {
             return _unitOfWork.Sessions.AsQueryable()
